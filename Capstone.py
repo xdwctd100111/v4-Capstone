@@ -293,8 +293,13 @@ class Library:
         return self.db.fetch_results()
 
 
-
-
+    def visualize_borrowed_count_per_month(self):
+        query = 'SELECT EXTRACT(MONTH FROM borrowed_date) AS month, COUNT(*) AS borrowed_count FROM borrowed_books GROUP BY month ORDER BY month'
+        self.db.execute_query(query)
+        results = self.db.fetch_results()
+        months = [result[0] for result in results]
+        counts = [result[1] for result in results]
+    
     def visualize_active_members_per_month(self):
 
         results = self.get_active_members_per_month()
@@ -320,33 +325,16 @@ class Library:
 
 
     def visualize_borrowed_count_per_category(self):
-
         query = "SELECT b.category, COUNT(*) AS borrowed_count FROM borrowed_books bb JOIN books b ON bb.book_id = b.id GROUP BY b.category"
-
         self.db.execute_query(query)
-
         borrowed_count = self.db.fetch_results()
-
-
-
-
         categories = [item[0] for item in borrowed_count]
-
         counts = [item[1] for item in borrowed_count]
-
-
-
-
         plt.bar(range(len(categories)), counts)
-
         plt.xticks(range(len(categories)), categories)
-
         plt.xlabel("Category")
-
         plt.ylabel("Number of Books Borrowed")
-
         plt.title("Number of Books Borrowed per Category")
-
         plt.show()
 
 db = Database(host, port, username, password, database)
@@ -376,7 +364,7 @@ class Book:
         query = 'SELECT b.title COUNT(*) FROM books b JOIN borrowed_books ON b.id = bb.book_id GROUP BY '
 
     #def get_active_members_per_month(self):
-             
+          
 
     def get_borrowed_books_per_category(self): #returns number of borrowed books per category
         query = 'SELECT Category COUNT(*) AS borrowed_count FROM books b JOIN borrowed_books bb ON b.id = bb.book_id GROUP BY category'
@@ -394,5 +382,5 @@ class Book:
          
     #def get_most_active_member(self):
 
-
-
+l = library.visualize_borrowed_count_per_month
+l
