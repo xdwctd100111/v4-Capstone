@@ -299,6 +299,15 @@ class Library:
         results = self.db.fetch_results()
         months = [result[0] for result in results]
         counts = [result[1] for result in results]
+        plt.plot(months, counts, marker='o')
+
+        plt.xlabel("Month")
+
+        plt.ylabel("Number of Borrowed Books")
+
+        plt.title("Number of Borrowed Books Per Month")
+
+        plt.show()
     
     def visualize_active_members_per_month(self):
 
@@ -382,5 +391,6 @@ class Book:
          
     #def get_most_active_member(self):
 
-l = library.visualize_borrowed_count_per_month
-l
+library.visualize_borrowed_count_per_month()
+library.visualize_active_members_per_month()
+library.visualize_borrowed_count_per_category()
