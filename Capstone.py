@@ -1,7 +1,7 @@
 
 from dotenv import load_dotenv
 import os
-import matplotlib
+import matplotlib as plt
 import datetime
 import psycopg2
 from faker import Faker
