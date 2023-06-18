@@ -10,10 +10,10 @@ class Database:
 def connect(self):
     error = None
     self.connection = None
-    self.cursor = None
+    self.cur = None ### I changed self.cursor to self.cur
  
-    if self.host and self.port and self.username and self.password and self.database:
-        try:
+    if self.host and self.port and self.username and self.password and self.database: #if all these attributes arent none...
+        try:  #tries to get connnection to railway database
             conn = psycopg2.connect(
             host="containers-us-west-124.railway.app",
             database="railway",
@@ -30,17 +30,17 @@ def connect(self):
                 database=self.database
             )
 
-        except:
+        except: #if no connection, prints error message
             print('failed to connect')
-def execute_query(self, query): #function to test
+def execute_query(self, query): #function to execute queries
     try: 
-        self.cursor.execute(query)
+        self.cur.execute(query) ###I changed self.cursor to self.cur
         self.connection.commit() #committing changes 
         print('Query executed successfully')
     except: 
         psycopg2.Error
 def fetching_results(self):
-    return self.cursor.fetchall()
+    return self.cur.fetchall()
 
 
 ###SQL MEMBER CLASS
@@ -73,3 +73,22 @@ class Member: #function of member details
 database = Database()
 
 
+###SQL LIBRARY CLASS
+class Library:
+    def __init__(self):
+        self.database = Database()
+        self.database.connect() #connect to railway database
+
+    def get_most_active_member(self):
+        query = 'SELECT member_id FROM borrowed_books GROUP BY {member_id} ORDER BY COUNT(*) DESC LIMIT 1'
+        self.db.execute_query(query)
+        results = self.db.fetch_results()
+        return results
+    
+    def get_most_borrowed_books(self, borrowed_count):
+        plt.bar(self.name,borrowed_count)
+        plt.xlabel('Members of the Library')
+        plt.ylabel('Number of Borrowed Books')
+        plt.title('Number of Books Borrowed Per Member')
+        plt.show()
+    
