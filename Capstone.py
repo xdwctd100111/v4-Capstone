@@ -127,6 +127,16 @@ def create_database():
     cur.close()
 
     conn.close()
+
+
+
+def create_tables():
+
+    conn = psycopg2.connect(host=host, port=port, user=username, password=password, database=database)
+
+    cur = conn.cursor()
+
+
 # Create books table
 
     cur.execute("""
