@@ -1,4 +1,13 @@
 
+from dotenv import load_dotenv
+import os
+import matplotlib
+import datetime
+import psycopg2
+from faker import Faker
+import random
+from tqdm import tqdm
+
 class Database:
     def __init__(self): #does not require 5 positional arguments
         self.host = os.getenv('HOST')
