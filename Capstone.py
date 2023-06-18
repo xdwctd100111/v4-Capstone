@@ -8,6 +8,7 @@ from faker import Faker
 import random
 from tqdm import tqdm
 
+
 class Database:
     def __init__(self): #does not require 5 positional arguments
         self.host = os.getenv('HOST')
@@ -95,9 +96,60 @@ class Library:
         return results
     
     def get_most_borrowed_books(self, borrowed_count):
-        plt.bar(self.name,borrowed_count)
+        name = list(self.name)
+        plt.bar(range(len(self.name)), borrowed_count)
+        plt.xticks(range(len(self.name)), self.name)
         plt.xlabel('Members of the Library')
         plt.ylabel('Number of Borrowed Books')
         plt.title('Number of Books Borrowed Per Member')
         plt.show()
+
+
+db = Database(host, port, username, password, database)
+db.connect()
+library = Library(db)
+borrowed_count = [("Member 1", 10), ("Member 2", 5), ("Member 3", 8)]
+# Call visualize_borrowed_count method to display the graph
+library.visualize_borrowed_count(borrowed_count)
+
+
+###SQL BOOK CLASS
+class Book:
+    def __init__(self, title, author, category): 
+        self.title = title
+        self.author = author
+        self.category = category
+        self.db = Database()
+        self.db.connect()
+
+    def save(self): #saves book into the books database
+        query = f'INSERT INTO books (Title, Author, Category) VALUES({self.title},{self.author},{self.category})'
+        self.db.execute_query(query)
+        results = self.db.fetch_results()
+        return results
     
+
+    def get_borrowed_books_per_month(self):
+        query = SELECT b.title COUNT(*) FROM books b JOIN           
+
+    #def get_active_members_per_month(self):
+             
+
+    def get_borrowed_books_per_category(self): #returns number of borrowed books per category
+        query = 'SELECT Category COUNT(*) AS borrowed_count FROM books b JOIN borrowed_books bb ON b.id = bb.book_id GROUP BY category'
+        self.db.execute_query(query)
+        results = self.db.fetch_results()
+        return results
+    
+    def get_top_result_borrowed_books(self): #returns most borrowed bookS
+        query = 'SELECT b.title, COUNT(*) AS borrowed_count FROM books b JOIN borrowed_books bb ON b.id = bb.book_id GROUP BY b.title ORDER BY borrowed_count'
+        self.db.execute_query(query)
+        results = self.db.fetch_results()
+        return results
+    
+    #def get_book_count_top_members(self):
+         
+    #def get_most_active_member(self):
+
+
+
